@@ -483,9 +483,9 @@ def exec_mirror_shop_replace_skill_and_purchase_ego_gifts(self, node: TaskNode, 
                 logger.info(
                     f"确认执行该罪人的技能替换", input_handler.capture_screenshot()
                 )
-                time.sleep(0.3)
+                time.sleep(1)
                 input_handler.click(790, 535)
-                time.sleep(0.5)
+                time.sleep(1)
                 input_handler.click(790, 535)
                 replaced = True
                 self.exec_wait_disappear(get_task("wait_connecting_disappear"))

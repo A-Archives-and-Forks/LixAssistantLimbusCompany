@@ -381,7 +381,7 @@ def exec_back_to_init_page(self, node: TaskNode, func):
         time.sleep(2)
         input_handler.click(640, 400)  # 非镜牢的退出
         input_handler.click(640, 430)  # 镜牢的战斗退出
-    elif recognize_handler.template_match(tmp_screenshot, "defeat"):
+    elif recognize_handler.template_match(tmp_screenshot, "defeat") or recognize_handler.template_match(tmp_screenshot, "victory"):
         input_handler.key_press("enter")
         time.sleep(1)
     elif recognize_handler.template_match(
@@ -394,9 +394,20 @@ def exec_back_to_init_page(self, node: TaskNode, func):
         input_handler.click(730, 435)
         time.sleep(2)
         input_handler.key_press("enter")
+    elif recognize_handler.template_match(tmp_screenshot, "exploration_complete"):
+        for _ in range(6):
+            input_handler.key_press("enter")
+            time.sleep(1)
+        return (node.name, None, get_task("mirror_defeat").get_next)
     else:
-        logger.debug("没检测到需要特殊处理的情况", tmp_screenshot)
-        time.sleep(5)
+        logger.debug("没检测到需要特殊处理的情况，用 esc 试试", tmp_screenshot)
+        input_handler.key_press("esc")
+        time.sleep(0.2)
+        tmp_screenshot = input_handler.capture_screenshot()
+        logger.debug("esc 后", tmp_screenshot)
+        time.sleep(1)
+        if len(res := recognize_handler.template_match(tmp_screenshot, "quit_game")) > 0:
+            input_handler.key_press("esc")
     time.sleep(1)
 
 
