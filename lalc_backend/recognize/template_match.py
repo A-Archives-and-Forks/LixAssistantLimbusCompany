@@ -184,7 +184,7 @@ if __name__ == "__main__":
         # templates.append(get_image("to_corrode_0%"))
 
         # templates.append(get_image("download_data_confirm"))
-        templates.append(get_image("rewards_acquired_confirm"))
+        templates.append(get_image("cost_to_enhance_this_ego_gift"))
         # templates.append(get_image("main_drive_with_text"))
 
         # templates.append(get_image("Dark Vestige"))
@@ -214,7 +214,7 @@ if __name__ == "__main__":
         for template in templates:
             # matches = template_match(screenshot, template, visualize=True, threshold=0.2, grayscale=False)
             start = time.time()
-            matches = template_match(screenshot, template, visualize=True, threshold=0.8, screenshot_scale=1.0)
+            matches = template_match(screenshot, template, visualize=True, threshold=0.6, screenshot_scale=1.0)
             print(f"used time:{time.time()-start}")
             print(f"   找到 {len(matches)} 个匹配")
             input_handler.set_background_state()
