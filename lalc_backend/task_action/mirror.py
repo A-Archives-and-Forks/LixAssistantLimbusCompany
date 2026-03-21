@@ -227,7 +227,7 @@ def exec_mirror_shop_enhance_ego_gifts(self, node: TaskNode, func):
     if not enable_enhance:
         logger.info("根据配置跳过EGO饰品升级")
         # 点击 leave，为离开商店做准备
-        input_handler.click(1120, 640)
+        input_handler.click(1120, 670)
         return
 
     input_handler.click(160, 390)
@@ -381,7 +381,7 @@ def exec_mirror_shop_enhance_ego_gifts(self, node: TaskNode, func):
     input_handler.click(500, 590)
     time.sleep(1)
     # 点击 leave，为离开商店做准备
-    input_handler.click(1120, 640)
+    input_handler.click(1120, 670)
 
 
 replace_skill_map = {
@@ -976,7 +976,7 @@ def exec_mirror_theme_pack(self, node: TaskNode, func):
         if mirror_mode == "normal":
             if recognize_handler.template_match(
                 tmp_screenshot, "hard_mode"
-            ) or recognize_handler.template_match(tmp_screenshot, "hard_clear_bonus"):
+            ):
                 input_handler.click(905, 50)
                 logger.info("现需要刷取普通镜牢，检测到镜牢开启困难模式，正在关闭")
                 time.sleep(5)
@@ -984,7 +984,7 @@ def exec_mirror_theme_pack(self, node: TaskNode, func):
         else:
             if recognize_handler.template_match(
                 tmp_screenshot, "normal_mode"
-            ) or recognize_handler.template_match(tmp_screenshot, "normal_clear_bonus"):
+            ):
                 input_handler.click(905, 50)
                 logger.info("现需要刷取困难镜牢，检测到镜牢开启普通模式，正在关闭")
                 time.sleep(5)
