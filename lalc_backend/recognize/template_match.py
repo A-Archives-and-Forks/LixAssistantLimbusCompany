@@ -184,7 +184,8 @@ if __name__ == "__main__":
         # templates.append(get_image("to_corrode_0%"))
 
         # templates.append(get_image("download_data_confirm"))
-        templates.append(get_image("cost_to_enhance_this_ego_gift"))
+        # templates.append(get_image("cost_to_enhance_this_ego_gift"))
+        templates.append(get_image("more_cost_to_enhance_this_ego_gift"))
         # templates.append(get_image("main_drive_with_text"))
 
         # templates.append(get_image("Dark Vestige"))

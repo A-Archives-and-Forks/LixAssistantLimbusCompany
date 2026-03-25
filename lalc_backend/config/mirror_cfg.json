@@ -1,7 +1,7 @@
 {
-  "check_node_target_count": 1,
+  "check_node_target_count": 99,
   "mirror_stop_purchase_gift_money": 800,
-  "mirror_mode": "hard",
+  "mirror_mode": "normal",
   "accept_reward": true,
   "node_scores": {
     "node_event": 20,
@@ -13,17 +13,14 @@
     "node_boss_encounter": 0
   },
   "mirror_team_styles": [
-    "Poise",
     "Burn",
     "Charge",
     "Sinking",
     "Rupture",
-    "Bleed"
+    "Bleed",
+    "Poise"
   ],
   "mirror_team_ego_gift_styles": [
-    [
-      "Poise"
-    ],
     [
       "Burn"
     ],
@@ -38,6 +35,9 @@
     ],
     [
       "Bleed"
+    ],
+    [
+      "Poise"
     ]
   ],
   "mirror_team_ego_allow_list": [
@@ -172,43 +172,6 @@
   ],
   "mirror_replace_skill": [
     {
-      "Don Quixote": [
-        3,
-        2,
-        1
-      ],
-      "Ryoshu": [
-        1,
-        2,
-        3
-      ],
-      "Meursault": [
-        3,
-        1,
-        2
-      ],
-      "Hong Lu": [
-        3,
-        1,
-        2
-      ],
-      "Heathcliff": [
-        3,
-        2,
-        1
-      ],
-      "Sinclair": [
-        3,
-        1,
-        2
-      ],
-      "Gregor": [
-        3,
-        1,
-        2
-      ]
-    },
-    {
       "Yi Sang": [
         3,
         1,
@@ -391,6 +354,43 @@
         3,
         2,
         1
+      ]
+    },
+    {
+      "Don Quixote": [
+        3,
+        2,
+        1
+      ],
+      "Ryoshu": [
+        1,
+        2,
+        3
+      ],
+      "Meursault": [
+        3,
+        1,
+        2
+      ],
+      "Hong Lu": [
+        3,
+        1,
+        2
+      ],
+      "Heathcliff": [
+        3,
+        2,
+        1
+      ],
+      "Sinclair": [
+        3,
+        1,
+        2
+      ],
+      "Gregor": [
+        3,
+        1,
+        2
       ]
     }
   ],
@@ -474,19 +474,6 @@
   ],
   "team_orders": [
     [
-      "Ryoshu",
-      "Heathcliff",
-      "Hong Lu",
-      "Sinclair",
-      "Meursault",
-      "Don Quixote",
-      "Yi Sang",
-      "Faust",
-      "Gregor",
-      "Ishmael",
-      "Rodion"
-    ],
-    [
       "Sinclair",
       "Meursault",
       "Yi Sang",
@@ -550,14 +537,27 @@
       "Meursault",
       "Hong Lu",
       "Faust"
+    ],
+    [
+      "Ryoshu",
+      "Heathcliff",
+      "Hong Lu",
+      "Sinclair",
+      "Meursault",
+      "Don Quixote",
+      "Gregor",
+      "Rodion",
+      "Yi Sang",
+      "Faust",
+      "Ishmael"
     ]
   ],
   "team_indexes": [
-    2,
     3,
     4,
     5,
     6,
-    1
+    1,
+    2
   ]
 }
