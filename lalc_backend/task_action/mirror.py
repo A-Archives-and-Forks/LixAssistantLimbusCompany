@@ -151,16 +151,29 @@ def exec_mirror_select_floor_ego_gift(self, node: TaskNode, func):
         if not has_owned_on_left:
             prefer_gift_without_owned.append(gift)
 
-    last_acquire_ego_gift = (
-        "last_acquire",
-        *(recognize_handler.template_match(tmp_screenshot, "acquire_ego_gift")[0]),
-    )
     select_orders = [
         *prefer_gift_without_owned,
         *acquire_without_owned,
         *acquire_with_owned,
-        last_acquire_ego_gift,
     ]
+
+    # 用一个临时变量村template acquire ego gift的结果，if 这个长度为 0 就log记录一下，说明识别异常了，如果不为0 就取第一个
+    tmp = recognize_handler.template_match(tmp_screenshot, "acquire_ego_gift")
+    last_acquire_ego_gift = None
+    if len(tmp) == 0:
+        logger.warning(
+            "跨层选 EGO 识别异常：识别不出 Acquire E.G.O Gift 模板", tmp_screenshot
+        )
+    else:
+        last_acquire_ego_gift = tmp[0]
+        select_orders.append(
+            (
+                "last_acquire",
+                last_acquire_ego_gift,
+            )
+        )
+
+    
 
     # 筛选出x坐标与其他点x坐标差值的点，从前往后保留第一个
     filtered_select_orders = []
@@ -1088,11 +1101,11 @@ def exec_mirror_select_initial_ego_gift(self, node: TaskNode, func):
     for i in cfg["mirror_team_initial_ego_orders"][cfg_index]:
         match i:
             case 1:
-                input_handler.click(980, 270)
+                input_handler.click(830, 270)
             case 2:
-                input_handler.click(980, 370)
+                input_handler.click(830, 370)
             case 3:
-                input_handler.click(980, 470)
+                input_handler.click(830, 470)
             case _:
                 raise Exception(f"发现非法初始 ego 顺序选项：{i}")
         time.sleep(0.5)
