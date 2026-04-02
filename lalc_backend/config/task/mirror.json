@@ -131,6 +131,7 @@
             "mirror_ready_to_battle",
             "mirror_battle",
             "mirror_event",
+            "mirror_event_dark",
             "mirror_shop_entry",
             "mirror_super_shop_entry",
             "mirror_select_encounter_reward_card",
@@ -206,6 +207,17 @@
         "action":"event_entry",
         "params":{
             "template":"event_skip"
+        },
+        "next":[
+            "mirror_circle_center"
+        ]
+    },
+    "mirror_event_dark":{
+        "recognition":"template_match",
+        "action":"event_entry_dark",
+        "params":{
+            "template":"event_skip_dark",
+            "threshold":0.9
         },
         "next":[
             "mirror_circle_center"

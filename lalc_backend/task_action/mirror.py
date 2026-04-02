@@ -158,20 +158,22 @@ def exec_mirror_select_floor_ego_gift(self, node: TaskNode, func):
     ]
 
     # 用一个临时变量村template acquire ego gift的结果，if 这个长度为 0 就log记录一下，说明识别异常了，如果不为0 就取第一个
-    tmp = recognize_handler.template_match(tmp_screenshot, "acquire_ego_gift")
     last_acquire_ego_gift = None
-    if len(tmp) == 0:
-        logger.warning(
-            "跨层选 EGO 识别异常：识别不出 Acquire E.G.O Gift 模板", tmp_screenshot
-        )
-    else:
-        last_acquire_ego_gift = tmp[0]
-        select_orders.append(
-            (
-                "last_acquire",
-                last_acquire_ego_gift,
+    if len(select_orders) == 0:
+        logger.debug("没有检测到倾向的饰品和可选的 Acquire E.G.O Gift，准备检测是否有 Acquire E.G.O Gift", tmp_screenshot)
+        tmp = recognize_handler.template_match(tmp_screenshot, "acquire_ego_gift")
+        if len(tmp) == 0:
+            logger.warning(
+                "跨层选 EGO 识别异常：识别不出 Acquire E.G.O Gift 模板", tmp_screenshot
             )
-        )
+        else:
+            last_acquire_ego_gift = tmp[0]
+            select_orders.append(
+                (
+                    "last_acquire",
+                    *last_acquire_ego_gift,
+                )
+            )
 
     
 

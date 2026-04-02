@@ -214,6 +214,7 @@
             "thread_defeat",
             "thread_battle",
             "thread_event",
+            "thread_event_dark",
             "thread_circle_center"
         ]
     },
@@ -232,6 +233,17 @@
         "action":"event_entry",
         "params":{
             "template":"event_skip"
+        },
+        "next":[
+            "thread_circle_center"
+        ]
+    },
+    "thread_event_dark":{
+        "recognition":"template_match",
+        "action":"event_entry_dark",
+        "params":{
+            "template":"event_skip_dark",
+            "threshold":0.9
         },
         "next":[
             "thread_circle_center"

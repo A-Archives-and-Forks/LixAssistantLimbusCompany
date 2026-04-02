@@ -13,14 +13,17 @@
     "node_boss_encounter": 0
   },
   "mirror_team_styles": [
+    "Charge",
     "Sinking",
     "Rupture",
     "Bleed",
     "Poise",
-    "Burn",
-    "Charge"
+    "Burn"
   ],
   "mirror_team_ego_gift_styles": [
+    [
+      "Charge"
+    ],
     [
       "Sinking"
     ],
@@ -35,9 +38,6 @@
     ],
     [
       "Burn"
-    ],
-    [
-      "Charge"
     ]
   ],
   "mirror_team_ego_allow_list": [
@@ -177,6 +177,43 @@
         1,
         2
       ],
+      "Faust": [
+        3,
+        2,
+        1
+      ],
+      "Don Quixote": [
+        3,
+        1,
+        2
+      ],
+      "Ryoshu": [
+        3,
+        2,
+        1
+      ],
+      "Heathcliff": [
+        3,
+        2,
+        1
+      ],
+      "Rodion": [
+        3,
+        2,
+        1
+      ],
+      "Outis": [
+        3,
+        1,
+        2
+      ]
+    },
+    {
+      "Yi Sang": [
+        3,
+        1,
+        2
+      ],
       "Hong Lu": [
         3,
         2,
@@ -351,43 +388,6 @@
         1
       ],
       "Gregor": [
-        3,
-        1,
-        2
-      ]
-    },
-    {
-      "Yi Sang": [
-        3,
-        1,
-        2
-      ],
-      "Faust": [
-        3,
-        2,
-        1
-      ],
-      "Don Quixote": [
-        3,
-        1,
-        2
-      ],
-      "Ryoshu": [
-        3,
-        2,
-        1
-      ],
-      "Heathcliff": [
-        3,
-        2,
-        1
-      ],
-      "Rodion": [
-        3,
-        2,
-        1
-      ],
-      "Outis": [
         3,
         1,
         2
@@ -474,6 +474,19 @@
   ],
   "team_orders": [
     [
+      "Heathcliff",
+      "Don Quixote",
+      "Rodion",
+      "Ryoshu",
+      "Faust",
+      "Outis",
+      "Yi Sang",
+      "Ishmael",
+      "Meursault",
+      "Gregor",
+      "Hong Lu"
+    ],
+    [
       "Rodion",
       "Heathcliff",
       "Yi Sang",
@@ -537,27 +550,14 @@
       "Don Quixote",
       "Ryoshu",
       "Hong Lu"
-    ],
-    [
-      "Heathcliff",
-      "Don Quixote",
-      "Rodion",
-      "Ryoshu",
-      "Faust",
-      "Outis",
-      "Yi Sang",
-      "Ishmael",
-      "Meursault",
-      "Gregor",
-      "Hong Lu"
     ]
   ],
   "team_indexes": [
+    4,
     5,
     6,
     1,
     2,
-    3,
-    4
+    3
   ]
 }
