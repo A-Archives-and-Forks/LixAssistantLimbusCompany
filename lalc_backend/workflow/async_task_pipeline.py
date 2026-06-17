@@ -38,7 +38,6 @@ class AsyncTaskPipeline:
         self.task_execution = None
         self._pause_event = asyncio.Event()
         self._pause_event.set()  # 初始非暂停
-        self._stop_event = asyncio.Event()
         self._worker_task: asyncio.Task | None = None
         self.shared_params = None
         self.logger = init_logger()
@@ -237,7 +236,7 @@ class AsyncTaskPipeline:
         """
         self.logger.debug("异步任务工作协程开始运行")
         try:
-            while self.task_stack and not self._stop_event.is_set():
+            while self.task_stack:
                 # 检查是否处于暂停状态
                 await self._pause_event.wait()
 
@@ -260,20 +259,14 @@ class AsyncTaskPipeline:
                     
                 # 短暂让出控制权，避免阻塞事件循环
                 await asyncio.sleep(0.01)
-            
-            # 检查是否是正常完成还是被停止
-            if not self._stop_event.is_set():
-                # 正常完成
-                await self.stop()
-                # 通知任务正常完成
-                if self._completion_callback:
-                    try:
-                        self._completion_callback()
-                    except Exception as callback_error:
-                        self.logger.error(f"完成回调执行失败: {str(callback_error)}")
-                
-            else:
-                self._state = self.STATE_STOPPED
+
+            # 通知任务正常完成
+            if self._completion_callback:
+                try:
+                    self._completion_callback()
+                except Exception as callback_error:
+                    self.logger.error(f"完成回调执行失败: {str(callback_error)}")
+
         except Exception as e:
             error_msg = f"任务执行过程中发生错误: {str(e)}"
             traceback_str = traceback.format_exc()
