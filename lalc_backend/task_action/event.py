@@ -33,7 +33,7 @@ def exec_event_make_choice(self, node:TaskNode, func):
     
     # 优先选能拿 E.G.O 的
     results = recognize_handler.detect_text_in_image(tmp_screenshot, mask=[670, 140, 620, 500])
-    special_phase = ["Select to gain", "Pass to level up", "Pass to gain", "check to gain", "depending on"]
+    special_phase = ["选择后", "等级提升", "成功时", "判定", "根据"] if self._get_using_cfg("other_task_cfg")["language"] == "ch" else ["Select to gain", "Pass to level up", "Pass to gain", "check to gain", "depending on"] # TODO 拉了坨大的 属于临时解决方案 后面应该改图像匹配或者加一个配置文件
     for res in results:
         if any(phase in res[0] for phase in special_phase):
             logger.info(f"找到优先选项：{res[0]}")
