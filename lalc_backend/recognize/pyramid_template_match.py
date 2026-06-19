@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 
 # try:
 from recognize.utils import pil_to_cv2, mask_screenshot, cv2_to_pil
-from recognize.img_registry import get_image, register_images_from_directory, get_images_by_tag
+from recognize.img_registry import get_image, register_images, get_images_by_tag
 # except ImportError:
 #     from utils import pil_to_cv2, mask_screenshot
-#     from img_registry import get_image, register_images_from_directory, get_images_by_tag
+#     from img_registry import get_image, register_images, get_images_by_tag
 
 
 def run_match(img, template, threshold):
@@ -192,7 +192,7 @@ if __name__ == "__main__":
     from input.input_handler import input_handler
     input_handler.refresh_window_state()
     input_handler.set_window_size()
-    register_images_from_directory()
+    register_images()
     # tmp_screenshot = mask_screenshot(input_handler.capture_screenshot(), 530, 200, 630, 350)
     # all_ego_gifts = get_images_by_tag("ego_gifts_Bleed")
     # for gift_name, gift_img in all_ego_gifts:

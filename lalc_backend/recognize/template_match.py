@@ -7,13 +7,13 @@ import os
 
 # try:
 from recognize.utils import pil_to_cv2, mask_screenshot, cv2_to_pil
-from recognize.img_registry import get_image, register_images_from_directory, get_images_by_tag
+from recognize.img_registry import get_image, register_images, get_images_by_tag
 # except ImportError:
 #     # 添加项目根目录到Python路径
 #     import sys
 #     sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 #     from recognize.utils import pil_to_cv2, mask_screenshot
-#     from recognize.img_registry import get_image, register_images_from_directory, get_images_by_tag
+#     from recognize.img_registry import get_image, register_images, get_images_by_tag
 
 
 def template_match(screenshot, template, threshold=0.8, visualize=False, grayscale=True, screenshot_scale=1, debug_image=None):
@@ -157,7 +157,7 @@ if __name__ == "__main__":
         # screenshot = mask_screenshot(screenshot, 140, 270, 150, 150)
         # screenshot = mask_screenshot(screenshot, 380, 40, 420, 580) # 镜牢选路
         
-        register_images_from_directory()
+        register_images()
         # screenshot = get_image("TURMDS")
         # templates.append(get_image("Little and To-be-Naughty Plushie"))
       

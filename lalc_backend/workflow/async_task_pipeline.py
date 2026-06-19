@@ -11,6 +11,7 @@ from utils.logger import init_logger
 from utils.config_manager import initialize_configs
 from .task_registry import init_tasks, get_task
 from input.input_handler import input_handler
+from recognize.img_registry import register_images
 
 # 全局单例槽位
 _pipeline_instance: "AsyncTaskPipeline | None" = None
@@ -218,6 +219,7 @@ class AsyncTaskPipeline:
             
         self._state = STATE_RUNNING
         self.add_start_task(entry)
+        register_images(self.shared_params["other_task_cfg"]["language"])
         
         if self._worker_task and not self._worker_task.done():
             self.logger.warning("Worker task still running, cancelling...")

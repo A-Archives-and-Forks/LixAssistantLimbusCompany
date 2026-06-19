@@ -1017,7 +1017,7 @@ def exec_mirror_theme_pack(self, node: TaskNode, func):
         for theme_pack_name, val in theme_packs:
             cur_weight = val["weight"]
             tmp = recognize_handler.template_match(
-                tmp_screenshot, theme_pack_name, mask_template=[20, 20, 130, 290]
+                tmp_screenshot, theme_pack_name, mask_template=[20, 20, 130, 210]
             )
             if len(tmp) > 0:
                 logger.info(f"检测到卡包 {theme_pack_name},权重：{cur_weight}")

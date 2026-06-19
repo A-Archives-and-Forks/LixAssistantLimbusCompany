@@ -8,7 +8,7 @@
   "sidebar_about": "关于",
   "sidebar_settings": "设置",
   "language_setting": "语言设置",
-  "follow_system": "跟随系统",
+  "follow_system": "跟随系统（后端为英文）",
   "autostart": "开机自启",
   "mirrorchan_cdk": "MirrorChan CDK",
   "config_set_management": "配置集管理",
