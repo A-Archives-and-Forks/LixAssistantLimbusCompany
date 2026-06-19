@@ -8,7 +8,7 @@
   "sidebar_about": "About",
   "sidebar_settings": "Settings",
   "language_setting": "Language Setting",
-  "follow_system": "Follow System",
+  "follow_system": "Follow System (Backend uses English)",
   "autostart": "Autostart",
   "mirrorchan_cdk": "MirrorChan CDK",
   "config_set_management": "Config Set Management",

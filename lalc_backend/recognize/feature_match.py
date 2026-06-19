@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 
 try:
     from recognize.utils import pil_to_cv2, mask_screenshot
-    from recognize.img_registry import get_image, register_images_from_directory, get_images_by_tag
+    from recognize.img_registry import get_image, register_images, get_images_by_tag
 except ImportError:
     from utils import pil_to_cv2, mask_screenshot
-    from img_registry import get_image, register_images_from_directory, get_images_by_tag
+    from img_registry import get_image, register_images, get_images_by_tag
 
 def _merge_close_matches(matches, distance_threshold=20):
     """
@@ -268,7 +268,7 @@ if __name__ == "__main__":
         templates = []
         screenshot = input_handler.capture_screenshot()
         # screenshot = mask_screenshot(screenshot, 70, 150, 1100, 400)
-        register_images_from_directory()
+        register_images()
         # for name, img in get_images_by_tag("theme_packs"):
         #     print(name)
         #     templates.append(img)

@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image
 
 from recognize.utils import pil_to_cv2, cv2_to_pil
-from recognize.img_registry import get_image, register_images_from_directory, get_images_by_tag
+from recognize.img_registry import get_image, register_images, get_images_by_tag
 
 def get_component(screenshot):
     # Step 1: 将 PIL 图像转换为 NumPy 数组
@@ -41,7 +41,7 @@ if __name__ == '__main__':
         templates = []
         screenshot = input_handler.capture_screenshot()
         # screenshot = mask_screenshot(screenshot, 250, 290, 60, 60)
-        register_images_from_directory()
+        register_images()
         # templates.append(get_image("Little and To-be-Naughty Plushie"))
       
         # templates.append(get_image("event_pass_very_low"))

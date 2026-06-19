@@ -158,7 +158,7 @@ class ConfigManager:
         """
         初始化主题包配置：
         1. 首先读取已有的配置
-        2. 遍历 img/theme_packs 文件夹下的图片
+        2. 遍历 img/general/theme_packs 文件夹下的图片
         3. 以图片名为 key，值为一个字典，包含权重值 weight，默认为 10
         4. 删除在配置中存在但在 img/theme_packs 目录中不存在的项
         """
@@ -166,7 +166,7 @@ class ConfigManager:
         self.theme_pack_cfg = self._load_config_file(self.theme_pack_cfg_file)
         
         # 遍历 img/theme_packs 文件夹
-        theme_packs_dir = "img/theme_packs"
+        theme_packs_dir = "img/general/theme_packs"
         existing_files = set()
         
         if os.path.exists(theme_packs_dir):
@@ -293,7 +293,8 @@ if __name__ == "__main__":
     # 示例：更新零散配置
     cm.update_other_task_config({
         "lunary_purchase_target": 2,
-        "test_mode":True, 
+        "test_mode":True,
+        "language": "en",
     })
     
     # 保存配置

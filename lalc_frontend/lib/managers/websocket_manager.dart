@@ -680,6 +680,22 @@ class WebSocketManager with ChangeNotifier {
     String currentVersion = const String.fromEnvironment('CURRENT_VERSION', defaultValue: 'V0.0.0');
     logger.d("发送配置时获取到的当前版本：$currentVersion");
 
+    // 你xhzxmy不会flutter 所以下面这段是dickseep写的
+    // ====================  新增：获取当前生效的语言 ====================
+    String currentLanguage = 'en'; // 默认英文
+    final langManager = LanguageManager.instance;
+    if (langManager.locale != null) {
+      // 如果用户手动选择了语言（zh 或 en）
+      currentLanguage = langManager.locale!.languageCode;
+    } else if (configManager.userConfig.language != null) {
+      // 如果用户选择了“跟随系统”，但系统语言恰好是中文（这里userConfig.language存的是用户手动选的值，如果为null则跟随系统）
+      // 注意：如果 userConfig.language 为 null，表示“跟随系统”。但我们没法在无Context时获取系统语言，
+      // 所以此时默认给 'en'，或者你可以根据平台逻辑判断，但稳妥起见给后端一个明确的默认值。
+      currentLanguage = configManager.userConfig.language!;
+    }
+    // 如果都为空，保持默认 'en'
+    // ================================================================
+
       // 构建包含所有配置的数据结构
     final configData = {
       'type': 'configurations',
@@ -687,6 +703,7 @@ class WebSocketManager with ChangeNotifier {
         'taskConfigs': configManager.taskConfigs.map((key, value) => MapEntry(key, value.toJson())),
         'teamConfigs': configManager.teamConfigs.map((key, value) => MapEntry(key.toString(), value.toJson())),
         'themePackWeights': configManager.themePackWeights,
+        'language': currentLanguage,
         'version': currentVersion,
       }
     };

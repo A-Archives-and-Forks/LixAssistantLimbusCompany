@@ -2,11 +2,18 @@ import os
 from PIL import Image
 import difflib
 
+from utils.logger import init_logger
+
 # 全局模板图片注册表
 IMG_REGISTRY = {}
 
 # 全局带 tag 的图片注册表
 TAG_REGISTRY = {}
+
+# 既然上述两个是全局的，这里也要全局标识当前语言
+LANGUAGE = None
+
+logger = init_logger()
 
 
 def _register_tag(tag: str, image_name: str, image: Image.Image):
@@ -16,33 +23,21 @@ def _register_tag(tag: str, image_name: str, image: Image.Image):
     TAG_REGISTRY[tag].append((image_name, image))
 
 
-def register_images_from_directory():
+def register_images_from_directory(img_root: str, repeat_warning = False):
     """
-    遍历img目录下的所有PNG图片，读取为PIL Image格式并存放到IMG_REGISTRY中
-
+    遍历指定目录下的所有PNG图片，读取为PIL Image格式并存放到IMG_REGISTRY中
+    Args:
+        img_root: "img/general", "img/<language>", ...
+        repeat_warning: 是否检查重名 默认为False， 重载不同语言时必须设为False
     Raises:
         Exception: 当遇到非PNG格式图片时抛出异常并输出图片名称
     """
-    IMG_REGISTRY.clear()
-    TAG_REGISTRY.clear()
-
-    img_dirs = [".\\img", "..\\img"]
-    img_root = None
-
-    for img_dir in img_dirs:
-        if os.path.exists(img_dir):
-            img_root = img_dir
-            break
-
-    if img_root is None:
-        raise FileNotFoundError("无法找到 img 目录")
-
-    # 遍历
+    logger.debug(f"[register_images_from_directory] 注册{img_root}下的图片素材")
     for root, dirs, files in os.walk(img_root):
-        # 跳过 dataset 文件夹
-        if "dataset" in dirs:
-            dirs.remove("dataset")
-            
+        # 现在把img目录瓜分了，不用处理 dataset 文件夹
+        # if "dataset" in dirs:
+        #     dirs.remove("dataset")
+
         for file in files:
             if file.lower().endswith(".png"):
                 file_path = os.path.join(root, file)
@@ -50,7 +45,7 @@ def register_images_from_directory():
                 file_name_without_ext = os.path.splitext(file)[0]
 
                 # ---- 原有功能：检查重名 ----
-                if file_name_without_ext in IMG_REGISTRY:
+                if repeat_warning and file_name_without_ext in IMG_REGISTRY:
                     raise Exception(f"发现重名图片: {file_path}")
 
                 # ---- 读取图片 ----
@@ -77,6 +72,39 @@ def register_images_from_directory():
 
             elif "." in file and not file.lower().endswith(".png"):
                 raise Exception(f"发现非PNG格式图片: {os.path.join(root, file)}")
+
+
+def register_images(language="") -> None:
+    """
+    注册图片 若无需则跳过
+    Args:
+        language: 语言 如果为默认值""则会只读取general
+    Returns:
+    """
+    global LANGUAGE
+
+    if language == LANGUAGE:
+        logger.debug(f"[register_images] 当前已读取 {language}语言 图片素材，无需重复读取")
+        return
+
+    img_dirs = [".\\img", "..\\img"]
+    img_root = None
+
+    for img_dir in img_dirs:
+        if os.path.exists(img_dir):
+            img_root = img_dir
+            break
+
+    if img_root is None:
+        raise FileNotFoundError("无法找到 img 目录")
+
+    if LANGUAGE is None:
+        logger.debug(f"[register_images] 正在读取 通用 图片素材")
+        register_images_from_directory(os.path.join(img_root, "general"), repeat_warning=True) # 任意语言通用素材
+    if language and LANGUAGE != language:
+        logger.debug(f"[register_images] 正在读取 {language}语言 图片素材")
+        register_images_from_directory(os.path.join(img_root, language), repeat_warning=False)
+    LANGUAGE = language
 
 
 def get_image(name) -> Image.Image:
@@ -210,7 +238,7 @@ def test_register_images():
     测试函数，用于运行register_images_from_directory函数
     """
     try:
-        register_images_from_directory()
+        register_images()
         print(f"成功注册 {len(IMG_REGISTRY)} 张图片:")
         for name in IMG_REGISTRY.keys():
             print(f"  - {name}")
@@ -272,7 +300,7 @@ if __name__ == "__main__":
     # sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
     # from input.input_handler import input_handler
     # input_handler.refresh_window_state()
-    register_images_from_directory()
+    register_images()
     # template_match(input_handler.capture_screenshot(), get_image("owned_ego_resources"), visualize=True)
     # test_register_images()
     # check_image_confusion()
