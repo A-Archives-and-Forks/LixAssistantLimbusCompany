@@ -130,7 +130,10 @@ class TaskExecution:
 
         return team_no % using_team_len
 
-    def _get_using_cfg(self, cfg_type: str):
+    def _get_using_cfg(self, cfg_type: str) -> dict:
+        """
+        Args: cfg_type: "exp", "thread", "mirror", "other_task" or "theme_pack"
+        """
         match cfg_type:
             case "exp":
                 return self.exp_cfg
