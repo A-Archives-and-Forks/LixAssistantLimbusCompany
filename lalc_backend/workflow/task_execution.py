@@ -92,6 +92,7 @@ class TaskExecution:
         self.mirror_cfg = shared_params["mirror_cfg"]
         self.other_task_cfg = shared_params["other_task_cfg"]
         self.theme_pack_cfg = shared_params["theme_pack_cfg"]
+        self.language_cfg = shared_params["language_cfg"]
         self.handlers = {}
 
         # 自动注册所有装饰器登记的函数
@@ -130,23 +131,21 @@ class TaskExecution:
 
         return team_no % using_team_len
 
-    def _get_using_cfg(self, cfg_type: str) -> dict:
-        """
-        Args: cfg_type: "exp", "thread", "mirror", "other_task" or "theme_pack"
-        """
-        match cfg_type:
-            case "exp":
-                return self.exp_cfg
-            case "thread":
-                return self.thread_cfg
-            case "mirror":
-                return self.mirror_cfg
-            case "other_task":
-                return self.other_task_cfg
-            case "theme_pack":
-                return self.theme_pack_cfg
-            case _:
-                raise Exception(f"出现未知配置类型：{cfg_type}")
+    def _get_using_cfg(self, cfg_type) -> dict:
+        mapping = {
+            "exp": self.exp_cfg,
+            "thread": self.thread_cfg,
+            "mirror": self.mirror_cfg,
+            "other_task": self.other_task_cfg,
+            "theme_pack": self.theme_pack_cfg,
+            "language": self.language_cfg,
+        }
+        cfg = mapping.get(cfg_type)
+        if cfg is None:
+            cfg = self.shared_params.get(cfg_type)
+        if cfg is None:
+            raise Exception(f"出现未知配置类型：{cfg_type}")
+        return cfg
 
     def _register_decorated_handlers(self):
         """

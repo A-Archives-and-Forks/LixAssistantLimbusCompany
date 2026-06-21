@@ -449,6 +449,7 @@ class AsyncTaskPipeline:
         mirror_cfg = config_manager.get_mirror_config()
         other_task_cfg = config_manager.get_other_task_config()
         theme_pack_cfg = config_manager.get_theme_pack_config()
+        language_cfg = config_manager.get_language_config()
         
         self.shared_params = {
             "exp_cfg": exp_cfg,
@@ -456,6 +457,7 @@ class AsyncTaskPipeline:
             "mirror_cfg": mirror_cfg,
             "other_task_cfg": other_task_cfg,
             "theme_pack_cfg": theme_pack_cfg,
+            "language_cfg": language_cfg,
         }
         self.logger.debug("获取共享参数完成")
 
