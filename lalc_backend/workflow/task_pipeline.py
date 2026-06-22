@@ -30,6 +30,7 @@ class TaskPipeline:
         """
         根据 share params 的内容，把几个 target count 的值给覆盖一下，这是以前版本的做法。
         但这个方法不优雅，目前 check 节点由于属于路由的范畴，所以暂且放在 task node，但路由的功能能否从 task node 分离也还需要探讨
+        这个函数目前已经启用了 且有target_count>0不置True的bug没修
         """
         for check_name, cfg_name in [("exp_check", "exp_cfg"), ("thread_check", "thread_cfg"), ("mirror_check", "mirror_cfg")]:
             check_task = get_task(check_name)
@@ -44,6 +45,7 @@ class TaskPipeline:
     def add_start_task(self, task_name: str, share_params: dict):
         """
         清空任务栈，并添加起始任务
+        这个函数似乎已经弃用了 目前工作的是async版本
         """
         # 初始化执行类
         self.task_execution = TaskExecution(share_params)
