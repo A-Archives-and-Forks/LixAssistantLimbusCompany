@@ -254,6 +254,11 @@ class AsyncTaskPipeline:
                 cur_task_name, do_action_func, *get_next_funcs = await asyncio.get_event_loop().run_in_executor(
                     None, self.task_execution.execute, pre_task_name, func
                 )
+
+                # 这个代码块是用土方法解决某bug：end之后栈里面有神秘残留
+                if cur_task_name == "end" and self.task_stack:
+                    self.task_stack.clear()
+                    break
                 
                 # 压栈规则：先压 get_next_func，再压 do_action_func
                 for next_func in reversed(get_next_funcs):
