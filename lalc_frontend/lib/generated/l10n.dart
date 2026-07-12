@@ -114,10 +114,10 @@ class S {
     );
   }
 
-  /// `Follow System`
+  /// `Follow System (Backend uses English)`
   String get follow_system {
     return Intl.message(
-      'Follow System',
+      'Follow System (Backend uses English)',
       name: 'follow_system',
       desc: '',
       args: [],
