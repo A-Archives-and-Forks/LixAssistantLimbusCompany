@@ -467,7 +467,7 @@ def exec_mirror_shop_replace_skill_and_purchase_ego_gifts(self, node: TaskNode, 
     translate = self._get_using_cfg("language")
     prefer_gifts = [translate.get(_gift, _gift) for _gift in prefer_gifts]
     all_gift_names = [translate.get(_gift, _gift) for _gift in all_gift_names]
-    need_to_replace_skill = {translate.get(_sinner, _sinner): _skills  for _sinner, _skills in need_to_replace_skill}
+    need_to_replace_skill = {translate.get(_sinner, _sinner): _skills  for _sinner, _skills in need_to_replace_skill.items()}
 
     logger.debug(
         f"本次倾向购买饰品名单：{prefer_gifts};\n本次倾向替换技能人员：{need_to_replace_skill}"
