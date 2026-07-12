@@ -128,7 +128,7 @@
         "action":"report_error",
         "params":{
             "template":"main_drive_with_text",
-            "error_msg":"请更换游戏语言为英语（English） | Please switch game language to English"
+            "error_msg":"语言选择错误或不受支持。请在设置中切换。 | Wrong language selected or unsupported language. Please switch languages in settings."
         }
     }
 }

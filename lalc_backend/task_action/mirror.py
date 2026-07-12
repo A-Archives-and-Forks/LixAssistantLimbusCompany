@@ -95,9 +95,14 @@ def exec_mirror_select_floor_ego_gift(self, node: TaskNode, func):
     all_gift_names = [x[0] for x in get_images_by_tag("ego_gifts")]
     max_ego_gifts_radio = get_max_radio_of_ego_gifts()
 
+    # 翻译
+    translate = self._get_using_cfg("language")
+    prefer_gifts = [translate.get(_gift, _gift) for _gift in prefer_gifts]
+    all_gift_names = [translate.get(_gift, _gift) for _gift in all_gift_names]
+
     tmp_screenshot = input_handler.capture_screenshot()
     cur_gifts = recognize_handler.detect_text_in_image(
-        tmp_screenshot, mask=[90, 170, 1090, 40]
+        tmp_screenshot, mask=[90, 180, 1090, 40]
     )
     prefer_cur_gifts = []
 
@@ -457,6 +462,13 @@ def exec_mirror_shop_replace_skill_and_purchase_ego_gifts(self, node: TaskNode, 
     all_gift_names = [x[0] for x in get_images_by_tag("ego_gifts")]
     max_ego_gifts_radio = get_max_radio_of_ego_gifts()
     need_to_replace_skill = cfg["mirror_replace_skill"][cfg_index]
+
+    # 翻译
+    translate = self._get_using_cfg("language")
+    prefer_gifts = [translate.get(_gift, _gift) for _gift in prefer_gifts]
+    all_gift_names = [translate.get(_gift, _gift) for _gift in all_gift_names]
+    need_to_replace_skill = {translate.get(_sinner, _sinner): _skills  for _sinner, _skills in need_to_replace_skill}
+
     logger.debug(
         f"本次倾向购买饰品名单：{prefer_gifts};\n本次倾向替换技能人员：{need_to_replace_skill}"
     )
@@ -534,11 +546,11 @@ def exec_mirror_shop_replace_skill_and_purchase_ego_gifts(self, node: TaskNode, 
 
     def exec_purchase_ego_gifts():
         gifts = recognize_handler.detect_text_in_image(
-            tmp_screenshot, mask=[535, 325, 650, 50]
+            tmp_screenshot, mask=[535, 335, 650, 30]
         )
         gifts.sort(key=lambda x : x[1])
         other_line_gifts = recognize_handler.detect_text_in_image(
-            tmp_screenshot, mask=[535, 480, 650, 50]
+            tmp_screenshot, mask=[535, 490, 650, 30]
         )
         other_line_gifts.sort(key=lambda x : x[1])
         gifts.extend(other_line_gifts)
@@ -547,10 +559,10 @@ def exec_mirror_shop_replace_skill_and_purchase_ego_gifts(self, node: TaskNode, 
             gifts[i] = (*gifts[i], i)
 
         purcased_list = recognize_handler.detect_text_in_image(
-            tmp_screenshot, mask=[535, 200, 650, 40]
+            tmp_screenshot, mask=[535, 220, 650, 20]
         )
         other_line_purchased = recognize_handler.detect_text_in_image(
-            tmp_screenshot, mask=[535, 355, 650, 40]
+            tmp_screenshot, mask=[535, 375, 650, 20]
         )
         purcased_list.extend(other_line_purchased)
 
@@ -573,8 +585,8 @@ def exec_mirror_shop_replace_skill_and_purchase_ego_gifts(self, node: TaskNode, 
         for gift in gifts:
             tmp = difflib.get_close_matches(gift[0], all_gift_names, cutoff=0.8)
             if len(tmp) == 0:
-                if not ("Replace" in gift[0]) and not (
-                    "Skill" in gift[0]
+                if not (translate.get("Replace", "Replace") in gift[0]) and not (
+                    translate.get("Skill", "Skill") in gift[0]
                 ):  # 排除技能替换的警告
                     logger.warning(f"识别异常：识别不出饰品文字{gift[0]},详情：{gift}")
                 continue
@@ -623,7 +635,7 @@ def exec_mirror_shop_replace_skill_and_purchase_ego_gifts(self, node: TaskNode, 
             try:
                 cur_money = int(cur_money[0][0])
             except Exception as e:
-                logger.warning(f"{node.name} 获取现钱发生错误[{e}]，就当现在没有钱")
+                logger.warning(f"{node.name} 获取现钱发生错误[{e}]，错误数据为:{cur_money}。就当现在没有钱")
                 cur_money = 0
         else:
             cur_money = 0
@@ -1017,7 +1029,7 @@ def exec_mirror_theme_pack(self, node: TaskNode, func):
         for theme_pack_name, val in theme_packs:
             cur_weight = val["weight"]
             tmp = recognize_handler.template_match(
-                tmp_screenshot, theme_pack_name, mask_template=[20, 20, 130, 290]
+                tmp_screenshot, theme_pack_name, mask_template=[20, 20, 130, 210]
             )
             if len(tmp) > 0:
                 logger.info(f"检测到卡包 {theme_pack_name},权重：{cur_weight}")

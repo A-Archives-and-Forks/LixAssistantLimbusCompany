@@ -24,6 +24,8 @@ class ConfigManager:
         self.mirror_cfg_file = os.path.join(config_dir, "mirror_cfg.json")
         self.other_task_cfg_file = os.path.join(config_dir, "other_task_cfg.json")
         self.theme_pack_cfg_file = os.path.join(config_dir, "theme_pack_cfg.json")
+
+        self.language_cfg_dir = os.path.join(config_dir, "language")
         
         # 初始化配置数据结构
         self.exp_cfg = {}
@@ -31,6 +33,7 @@ class ConfigManager:
         self.mirror_cfg = {}
         self.other_task_cfg = {}
         self.theme_pack_cfg = {}
+        self.language_cfg = {}
 
     def load_configs(self):
         """
@@ -41,6 +44,16 @@ class ConfigManager:
         self.mirror_cfg = self._load_config_file(self.mirror_cfg_file)
         self.other_task_cfg = self._load_config_file(self.other_task_cfg_file)
         self.theme_pack_cfg = self._load_config_file(self.theme_pack_cfg_file)
+
+        # 加载json语言包
+        for lang in os.listdir(self.language_cfg_dir):
+            lang_root = os.path.join(self.language_cfg_dir, lang)
+            self.language_cfg[lang] = dict()
+            for root, dirs, files in os.walk(lang_root):
+                for file in files:
+                    if file.lower().endswith(".json"):
+                        self.language_cfg[lang].update(self._load_config_file(os.path.join(root, file)))
+
 
     def save_configs(self):
         """
@@ -118,6 +131,15 @@ class ConfigManager:
         """
         return self.theme_pack_cfg.copy()
 
+    def get_language_config(self) -> Dict[str, str]:
+        """
+        获取当前语言的翻译配置
+        数据量较大，且无写入需求 是线程安全的，故返回的是原始地址，并非拷贝
+        若无（如使用英文、没翻译等情况）则返回空字典
+        Returns:
+        """
+        return self.language_cfg.get(self.other_task_cfg["language"], dict())
+
     def update_exp_config(self, config: Dict[str, Any]):
         """
         更新经验副本配置
@@ -158,7 +180,7 @@ class ConfigManager:
         """
         初始化主题包配置：
         1. 首先读取已有的配置
-        2. 遍历 img/theme_packs 文件夹下的图片
+        2. 遍历 img/general/theme_packs 文件夹下的图片
         3. 以图片名为 key，值为一个字典，包含权重值 weight，默认为 10
         4. 删除在配置中存在但在 img/theme_packs 目录中不存在的项
         """
@@ -166,7 +188,7 @@ class ConfigManager:
         self.theme_pack_cfg = self._load_config_file(self.theme_pack_cfg_file)
         
         # 遍历 img/theme_packs 文件夹
-        theme_packs_dir = "img/theme_packs"
+        theme_packs_dir = "img/general/theme_packs"
         existing_files = set()
         
         if os.path.exists(theme_packs_dir):
@@ -293,7 +315,8 @@ if __name__ == "__main__":
     # 示例：更新零散配置
     cm.update_other_task_config({
         "lunary_purchase_target": 2,
-        "test_mode":True, 
+        "test_mode":True,
+        "language": "en",
     })
     
     # 保存配置

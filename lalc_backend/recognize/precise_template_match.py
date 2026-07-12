@@ -7,10 +7,10 @@ import os
 
 # try:
 from recognize.utils import pil_to_cv2, mask_screenshot, cv2_to_pil
-from recognize.img_registry import get_image, register_images_from_directory
+from recognize.img_registry import get_image, register_images
 # except ImportError:
 #     from utils import pil_to_cv2, mask_screenshot
-#     from img_registry import get_image, register_images_from_directory
+#     from img_registry import get_image, register_images
 
 
 def precise_template_match(screenshot, template, threshold=0.7, visualize=False, grayscale=True, screenshot_scale=1, debug_image=None):
@@ -152,7 +152,7 @@ if __name__ == "__main__":
         templates = []
         screenshot = input_handler.capture_screenshot()
         # screenshot = mask_screenshot(screenshot, 590, 180, 560, 350)
-        register_images_from_directory()
+        register_images()
         # templates.append(get_image("Little and To-be-Naughty Plushie"))
         # templates.append(get_image("hard_mode"))
         

@@ -33,7 +33,10 @@ def exec_event_make_choice(self, node:TaskNode, func):
     
     # 优先选能拿 E.G.O 的
     results = recognize_handler.detect_text_in_image(tmp_screenshot, mask=[670, 140, 620, 500])
-    special_phase = ["Select to gain", "Pass to level up", "Pass to gain", "check to gain", "depending on"]
+    special_phase = [
+        self._get_using_cfg("language").get(key, key)
+        for key in ["Select to gain", "Pass to level up", "Pass to gain", "check to gain", "depending on"]
+    ]
     for res in results:
         if any(phase in res[0] for phase in special_phase):
             logger.info(f"找到优先选项：{res[0]}")

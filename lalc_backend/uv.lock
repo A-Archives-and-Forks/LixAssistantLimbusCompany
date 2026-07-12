@@ -559,7 +559,7 @@ requires-dist = [
     { name = "psutil", specifier = ">=7.1.3" },
     { name = "pynput", specifier = ">=1.8.1" },
     { name = "pywin32", specifier = ">=311" },
-    { name = "rapidocr", specifier = ">=3.4.3" },
+    { name = "rapidocr", specifier = ">=3.8.4" },
     { name = "scipy", specifier = ">=1.15.3" },
     { name = "websockets", specifier = ">=15.0.1" },
 ]
@@ -1202,7 +1202,7 @@ wheels = [
 
 [[package]]
 name = "rapidocr"
-version = "3.4.3"
+version = "3.8.4"
 source = { registry = "https://pypi.tuna.tsinghua.edu.cn/simple" }
 dependencies = [
     { name = "colorlog" },
@@ -1218,7 +1218,7 @@ dependencies = [
     { name = "tqdm" },
 ]
 wheels = [
-    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/cf/a8/401c97c8fa6c7f964ace3bf11d8fad4902f07f969a0f4f5d7518f46ebeef/rapidocr-3.4.3-py3-none-any.whl", hash = "sha256:a007bf196c41e2c7321dfa570e8cef06cd7fb41d7a283b91b7e4b7b08623ed27", size = 15060208, upload-time = "2025-12-09T14:45:34.189Z" },
+    { url = "https://pypi.tuna.tsinghua.edu.cn/packages/f3/26/387eca0137a3507ea62acedd2b2903697223cbca2f8561f7c63b47ec3ad2/rapidocr-3.8.4-py3-none-any.whl", hash = "sha256:1a8400df99ea2348a6d1902d1c6fa64c29edcf56b3c58cecd4cf1e5ff51b7ae2", size = 15018555, upload-time = "2026-06-15T08:55:07.979Z" },
 ]
 
 [[package]]
