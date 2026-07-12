@@ -6,7 +6,7 @@ from datetime import datetime
 import difflib
 
 from recognize.img_recognizer import recognize_handler
-from recognize.img_registry import get_images_by_tag, get_max_radio_of_theme_packs, register_images_from_directory
+from recognize.img_registry import get_images_by_tag, get_max_radio_of_theme_packs, register_images
 from recognize.utils import pil_to_cv2, cv2_to_pil, mask_screenshot
 from input.input_handler import input_handler
 from utils.logger import init_logger
@@ -52,7 +52,7 @@ def detect_and_save_theme_pack(pil_img):
         return
 
     # ---- 2. 保存目录 ----
-    save_dir = "img/theme_packs"
+    save_dir = "img/general/theme_packs"
     os.makedirs(save_dir, exist_ok=True)
 
     draw = ImageDraw.Draw(pil_img)
@@ -176,7 +176,7 @@ def detect_and_save_theme_pack(pil_img):
     # pil_img.show()
 
     if get_new_theme_pack:
-        register_images_from_directory()
+        register_images()
 
     return processed_theme_packs
 

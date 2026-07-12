@@ -504,6 +504,7 @@ class ServerController:
         backend_config["other_task_cfg"]["ego_enable"] = ego_config.get(
             "enabled", False
         )
+        backend_config["other_task_cfg"]["language"] = frontend_config.get("language", "en")
         backend_config["other_task_cfg"]["test_mode"] = False
 
         return backend_config
@@ -1231,7 +1232,7 @@ class ServerController:
                 from pathlib import Path
 
                 # 构造项目根目录下img文件夹的绝对路径
-                img_dir = Path("./img")
+                img_dir = Path("./img/general")
                 if not img_dir.exists():
                     raise ValueError(f"项目根目录下img文件夹不存在: {img_dir}")
 

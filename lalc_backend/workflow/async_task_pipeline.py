@@ -11,6 +11,7 @@ from utils.logger import init_logger
 from utils.config_manager import initialize_configs
 from .task_registry import init_tasks, get_task
 from input.input_handler import input_handler
+from recognize.img_registry import register_images
 
 # 全局单例槽位
 _pipeline_instance: "AsyncTaskPipeline | None" = None
@@ -38,7 +39,6 @@ class AsyncTaskPipeline:
         self.task_execution = None
         self._pause_event = asyncio.Event()
         self._pause_event.set()  # 初始非暂停
-        self._stop_event = asyncio.Event()
         self._worker_task: asyncio.Task | None = None
         self.shared_params = None
         self.logger = init_logger()
@@ -160,10 +160,13 @@ class AsyncTaskPipeline:
         """
         for check_name, cfg_name in [("exp_check", "exp_cfg"), ("thread_check", "thread_cfg"), ("mirror_check", "mirror_cfg")]:
             check_task = get_task(check_name)
-            check_task.set_param("target_count", self.shared_params[cfg_name]["check_node_target_count"])
-            if check_task.get_param("target_count") == 0:
+            cnt = self.shared_params[cfg_name]["check_node_target_count"]
+            check_task.set_param("target_count", cnt)
+            if cnt == 0:
                 check_task.get_param("disable_node").enable = False
-            
+            else:
+                check_task.get_param("disable_node").enable = True
+
             check_task.set_param('execute_count', 0)
 
     def add_start_task(self, task_name: str):
@@ -219,6 +222,7 @@ class AsyncTaskPipeline:
             
         self._state = STATE_RUNNING
         self.add_start_task(entry)
+        register_images(self.shared_params["other_task_cfg"]["language"])
         
         if self._worker_task and not self._worker_task.done():
             self.logger.warning("Worker task still running, cancelling...")
@@ -237,7 +241,7 @@ class AsyncTaskPipeline:
         """
         self.logger.debug("异步任务工作协程开始运行")
         try:
-            while self.task_stack and not self._stop_event.is_set():
+            while self.task_stack:
                 # 检查是否处于暂停状态
                 await self._pause_event.wait()
 
@@ -250,6 +254,11 @@ class AsyncTaskPipeline:
                 cur_task_name, do_action_func, *get_next_funcs = await asyncio.get_event_loop().run_in_executor(
                     None, self.task_execution.execute, pre_task_name, func
                 )
+
+                # 这个代码块是用土方法解决某bug：end之后栈里面有神秘残留
+                if cur_task_name == "end" and self.task_stack:
+                    self.task_stack.clear()
+                    break
                 
                 # 压栈规则：先压 get_next_func，再压 do_action_func
                 for next_func in reversed(get_next_funcs):
@@ -260,20 +269,16 @@ class AsyncTaskPipeline:
                     
                 # 短暂让出控制权，避免阻塞事件循环
                 await asyncio.sleep(0.01)
-            
-            # 检查是否是正常完成还是被停止
-            if not self._stop_event.is_set():
-                # 正常完成
-                await self.stop()
-                # 通知任务正常完成
-                if self._completion_callback:
-                    try:
-                        self._completion_callback()
-                    except Exception as callback_error:
-                        self.logger.error(f"完成回调执行失败: {str(callback_error)}")
-                
-            else:
-                self._state = self.STATE_STOPPED
+
+            # 正常完成
+            await self.stop(force_cancel=False)
+            # 通知任务正常完成
+            if self._completion_callback:
+                try:
+                    self._completion_callback()
+                except Exception as callback_error:
+                    self.logger.error(f"完成回调执行失败: {str(callback_error)}")
+
         except Exception as e:
             error_msg = f"任务执行过程中发生错误: {str(e)}"
             traceback_str = traceback.format_exc()
@@ -287,7 +292,7 @@ class AsyncTaskPipeline:
                 except Exception as callback_error:
                     self.logger.error(f"错误回调执行失败: {str(callback_error)}")
             
-            await self.stop()
+            await self.stop(force_cancel=False)
             
             raise  # 重新抛出异常，让调用者处理
         finally:
@@ -409,8 +414,12 @@ class AsyncTaskPipeline:
         self._state = self.STATE_RUNNING
         self.logger.debug("异步任务流水线已恢复")
 
-    async def stop(self):
-        """停止任务流水线"""
+    async def stop(self, force_cancel=True):
+        """
+        停止任务流水线
+        Args:
+            force_cancel: 这个参数代表stop是从外部调用还是从内部(_worker)调用，是外力停止还是仅仅配合内部stop
+        """
         if self._state == STATE_STOPPED:
             self.logger.debug("任务线已停止，无需重复 stop")
             return
@@ -422,7 +431,7 @@ class AsyncTaskPipeline:
             
         self._state = STATE_STOPPED
         if self._worker_task:
-            if not self._worker_task.done():
+            if not self._worker_task.done() and force_cancel:
                 self.logger.info("正在取消 worker 任务...")
                 self._worker_task.cancel()
                 try:
@@ -430,7 +439,7 @@ class AsyncTaskPipeline:
                 except asyncio.CancelledError:
                     self.logger.info("Worker 任务已取消")
             self._worker_task = None
-        self.logger.info("任务流水线已停止")
+            self.logger.info("任务流水线已停止")
 
     def get_shared_params(self)->None:
         """
@@ -445,6 +454,7 @@ class AsyncTaskPipeline:
         mirror_cfg = config_manager.get_mirror_config()
         other_task_cfg = config_manager.get_other_task_config()
         theme_pack_cfg = config_manager.get_theme_pack_config()
+        language_cfg = config_manager.get_language_config()
         
         self.shared_params = {
             "exp_cfg": exp_cfg,
@@ -452,6 +462,7 @@ class AsyncTaskPipeline:
             "mirror_cfg": mirror_cfg,
             "other_task_cfg": other_task_cfg,
             "theme_pack_cfg": theme_pack_cfg,
+            "language_cfg": language_cfg,
         }
         self.logger.debug("获取共享参数完成")
 

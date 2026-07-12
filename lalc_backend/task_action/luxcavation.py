@@ -8,10 +8,13 @@ def exec_exp_select_stage(self, node: TaskNode, func):
     cfg = self._get_using_cfg("exp")
     target_stage = cfg["exp_stage"]
     pos = recognize_handler.find_text_in_image(input_handler.capture_screenshot(), target_stage, mask=[250, 180, 1000, 50])
+    cnt = 0
     while len(pos) == 0:
         input_handler.swipe(590, 310, 940, 310)
         time.sleep(0.6)
         pos = recognize_handler.find_text_in_image(input_handler.capture_screenshot(), target_stage, mask=[250, 180, 1000, 50])
+        cnt += 1
+        if cnt > 5: raise Exception(f"选不到 Lv{target_stage} 的经验副本关卡")
 
     # 选择进入位置
     enter_pos = (pos[0][1]+10, 480)
@@ -49,10 +52,13 @@ def exec_thread_select_stage(self, node: TaskNode, func):
 
     target_stage = cfg["thread_stage"]
     pos = recognize_handler.find_text_in_image(input_handler.capture_screenshot(), target_stage, mask=[610, 170, 90, 400])
+    cnt = 0
     while len(pos) == 0:
         input_handler.swipe(650, 325, 650, 430)
         time.sleep(0.6)
         pos = recognize_handler.find_text_in_image(input_handler.capture_screenshot(), target_stage, mask=[610, 170, 90, 400])
+        cnt += 1
+        if cnt > 5: raise Exception(f"选不到 Lv{target_stage} 的Thread副本关卡")
 
     input_handler.click(pos[0][1], pos[0][2])
 

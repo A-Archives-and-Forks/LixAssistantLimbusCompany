@@ -17,6 +17,9 @@
   "Burning Haze": {
     "weight": 5
   },
+  "Chaym Wwan": {
+    "weight": 10
+  },
   "Crawling Abyss": {
     "weight": 5
   },
@@ -129,6 +132,9 @@
     "weight": 10
   },
   "Miracle in District 20": {
+    "weight": 10
+  },
+  "Mnestic' Experience": {
     "weight": 10
   },
   "Mountain of Corpses, Sea of Blood": {
@@ -245,6 +251,9 @@
   "Trickled Sanguin Blood": {
     "weight": 10
   },
+  "Twining Threads": {
+    "weight": 10
+  },
   "Tyrannical Pride": {
     "weight": 5
   },
@@ -262,5 +271,17 @@
   },
   "Yield My Flesh to Claim Their Bones": {
     "weight": 5
+  },
+  "吞噬的暴食": {
+    "weight": 10
+  },
+  "堕落的忧郁": {
+    "weight": 10
+  },
+  "空转的怠惰": {
+    "weight": 10
+  },
+  "粉碎者们": {
+    "weight": 10
   }
 }

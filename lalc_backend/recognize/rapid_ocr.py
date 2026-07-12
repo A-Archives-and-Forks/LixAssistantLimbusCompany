@@ -176,6 +176,7 @@ def detect_text_in_image(image: Image.Image, visualize=False, threshold=0.3, mer
 
     detected_texts = [(text, cx, cy, conf) for text, cx, cy, conf, _ in final_merged_items]
 
+    detected_texts = [(correct_ocr_text(text), cx, cy, conf) for text, cx, cy, conf in detected_texts]  # OCR 纠错
     
     vis_img = cv2.cvtColor(image_cv, cv2.COLOR_GRAY2BGR)
     for text, cx, cy, conf, box in final_merged_items:
@@ -208,6 +209,34 @@ def find_text_in_image(pil_image, target_text, visualize=False, threshold=0.5):
             found_texts.append(text)
 
     return found_texts
+
+
+def correct_ocr_text(text: str) -> str:
+    """
+    针对 OCR 结果的智能纠错。尤其是锤本把60识别为G0的问题。
+    策略：
+      1. 只对长度 <= 3 且包含数字的短文本进行替换（防止误伤正常英文单词）。
+      2. 将常见混淆字母替换为数字（如 G→6, O→0, Z→2, S→5, B→8, I→1, l→1）。
+      3. 如果文本全是字母且无数字，则跳过（可能是真正的英文单词）。
+    """
+    # 如果文本不包含任何数字，或者长度 > 3，认为它不是纯数字/混合短码，跳过纠错
+    if len(text) > 3 or not any(c.isdigit() for c in text):
+        return text
+
+    # 混淆映射（可以再加）
+    corrections = {
+        'G': '6',
+        'O': '0',
+        'Z': '2',
+        'S': '5',
+        'B': '8',
+        'I': '1',
+        'l': '1',  # 小写 L
+    }
+    # 执行替换
+    for old, new in corrections.items():
+        text = text.replace(old, new)
+    return text
 
 
 if __name__ == "__main__":

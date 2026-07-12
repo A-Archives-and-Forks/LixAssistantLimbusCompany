@@ -8,9 +8,9 @@ import os
 try:
     from recognize.template_match  import template_match
     from recognize.utils import pil_to_cv2
-    from recognize.img_registry import register_images_from_directory, get_images_by_tag, get_image
+    from recognize.img_registry import register_images, get_images_by_tag, get_image
 except ImportError:
-    from img_registry import register_images_from_directory, get_images_by_tag, get_image
+    from img_registry import register_images, get_images_by_tag, get_image
     from template_match import template_match
     from utils import pil_to_cv2
 
@@ -167,7 +167,7 @@ if __name__ == "__main__":
     try:
         screenshot = input_handler.capture_screenshot()
         templates = []
-        register_images_from_directory()
+        register_images()
         # for name, img in get_images_by_tag("theme_packs"):
         #     print(name)
         #     templates.append(img)
@@ -175,10 +175,10 @@ if __name__ == "__main__":
         templates.append(get_image("Millarca"))
         templates.append(get_image("Respite"))
         templates.append(get_image("Rusted Muzzle"))
-        # templates.append(Image.open(r"./img/mirror/owned_ego_resources.png"))
+        # templates.append(Image.open(r"./img/general/mirror/owned_ego_resources.png"))
 
-        # templates.append(Image.open(r"./img/mirror/node_regular_encounter.png"))
-        # templates.append(Image.open(r"./img/mirror/node_event.png"))
+        # templates.append(Image.open(r"./img/general/mirror/node_regular_encounter.png"))
+        # templates.append(Image.open(r"./img/general/mirror/node_event.png"))
         print("已加载测试图像和模板图像")
     except Exception as e:
         print(f"加载图像时出错: {e}")

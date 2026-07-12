@@ -9,7 +9,7 @@ from recognize.color_template_match import color_template_match
 # from recognize.easy_ocr import detect_text_in_image, find_text_in_image, img_ocr
 from recognize.rapid_ocr import detect_text_in_image, find_text_in_image
 from recognize.utils import pil_to_cv2, mask_screenshot, fill_mask_screenshot
-from recognize.img_registry import register_images_from_directory, get_image
+from recognize.img_registry import register_images, get_image
 from recognize.feature_match import feature_match
 from recognize.pyramid_template_match import pyramid_template_match
 from recognize.brightness_threshold_match import brightness_threshold_match
@@ -30,10 +30,10 @@ class ImageRecognizer:
         """
         # 将图片注册到内存中
         try:
-            register_images_from_directory()
+            register_images()
         except Exception as e:
             raise Exception(f"图片初始化异常：{e}")
-        
+
 
     def template_match(self, screenshot:Image.Image, template:str, threshold=0.8, visualize=False, grayscale=True, mask=None, mask_template=None, screenshot_scale=1):
         """
